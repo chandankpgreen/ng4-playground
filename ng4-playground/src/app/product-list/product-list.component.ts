@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from './product';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'pm-products',
@@ -54,6 +55,9 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit() {
     console.log("On Init - Product List component");
+  }
+  onRatingClicked(rating: string): void{
+    this.pageTitle = 'Product List: ' + rating;
   }
 
 }
