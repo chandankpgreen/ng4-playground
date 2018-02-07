@@ -10,21 +10,22 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
+  [x: string]: any;
 
   pageTitle: string = "Product List";
   imageWidth: number = 50;
   imageMargin: number = 2;
   showImage: boolean = false;
   _listFilter: string;
-  get listFilter(): string{
+  get listFilter(): string {
     return this._listFilter;
   }
-  set listFilter(value:string) {
+  set listFilter(value: string) {
     this._listFilter = value;
-    this.filteredProducts = this._listFilter?this.performFilter(this._listFilter):this.products;
+    this.filteredProducts = this._listFilter ? this.performFilter(this._listFilter) : this.products;
   }
   filteredProducts: IProduct[];
-   products: IProduct[];//[{
+  products: IProduct[];//[{
   //   "productId": 2,
   //   "productName": "Garder Cart",
   //   "productCode": "GDN-0023",
@@ -43,22 +44,27 @@ export class ProductListComponent implements OnInit {
   //   "starRating": 4.8,
   //   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Claw-hammer.jpg/1200px-Claw-hammer.jpg"
   // }]
-  toggleImage(): void{
+  toggleImage(): void {
     this.showImage = !this.showImage;
   }
-  performFilter(filterBy: string): IProduct[]{
+  performFilter(filterBy: string): IProduct[] {
     filterBy = filterBy.toLocaleLowerCase();
-    return this.products.filter(x=>x.productName.toLocaleLowerCase().indexOf(filterBy)!== -1);
+    return this.products.filter(x => x.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
   }
   constructor(private _productService: ProductService) {
     this.listFilter = '';
-   }
+  }
 
   ngOnInit() {
     console.log("On Init - Product List component");
-    //this.products = this._productService.getProducts();
+    return this._productService.getProducts()
+      .subscribe(products => {
+        this.products = products;
+        this.filteredProducts = this.products;
+      },
+      error => this.errorMessage = <any>error);
   }
-  onRatingClicked(rating: string): void{
+  onRatingClicked(rating: string): void {
     this.pageTitle = 'Product List: ' + rating;
     this.filteredProducts = this.products;
   }
