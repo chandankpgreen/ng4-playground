@@ -14,7 +14,7 @@ export class ProductService {
   
   getProducts(): Observable<IProduct[]> {
     return this._http.get<IProduct[]>(this._productUrl)
-      .do(data => console.log("All: " + JSON.stringify(data))).catch(this.handleError);
+      .do(data => console.log("All: " + JSON.stringify(data)));
      // .catch(this.handleEror);
   }
   private handleError(err: HttpErrorResponse) {
