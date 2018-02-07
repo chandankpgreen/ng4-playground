@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from './product';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { ProductService } from './product.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'pm-products',
@@ -22,25 +24,25 @@ export class ProductListComponent implements OnInit {
     this.filteredProducts = this._listFilter?this.performFilter(this._listFilter):this.products;
   }
   filteredProducts: IProduct[];
-  products: IProduct[] = [{
-    "productId": 2,
-    "productName": "Garder Cart",
-    "productCode": "GDN-0023",
-    "releaseDate": "March 18, 2016",
-    "description": "15 gallon capacity rolling garage",
-    "price": 32.99,
-    "starRating": 4.2,
-    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/91-almuwslL._SL1500_.jpg"
-  }, {
-    "productId": 5,
-    "productName": "Hammer",
-    "productCode": "TBX-0048",
-    "releaseDate": "MAY  21, 2016",
-    "description": "Curved claw steel hammer",
-    "price": 8.9,
-    "starRating": 4.8,
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Claw-hammer.jpg/1200px-Claw-hammer.jpg"
-  }]
+   products: IProduct[];//[{
+  //   "productId": 2,
+  //   "productName": "Garder Cart",
+  //   "productCode": "GDN-0023",
+  //   "releaseDate": "March 18, 2016",
+  //   "description": "15 gallon capacity rolling garage",
+  //   "price": 32.99,
+  //   "starRating": 4.2,
+  //   "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/91-almuwslL._SL1500_.jpg"
+  // }, {
+  //   "productId": 5,
+  //   "productName": "Hammer",
+  //   "productCode": "TBX-0048",
+  //   "releaseDate": "MAY  21, 2016",
+  //   "description": "Curved claw steel hammer",
+  //   "price": 8.9,
+  //   "starRating": 4.8,
+  //   "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Claw-hammer.jpg/1200px-Claw-hammer.jpg"
+  // }]
   toggleImage(): void{
     this.showImage = !this.showImage;
   }
@@ -48,16 +50,17 @@ export class ProductListComponent implements OnInit {
     filterBy = filterBy.toLocaleLowerCase();
     return this.products.filter(x=>x.productName.toLocaleLowerCase().indexOf(filterBy)!== -1);
   }
-  constructor() {
-    this.filteredProducts = this.products;
+  constructor(private _productService: ProductService) {
     this.listFilter = '';
    }
 
   ngOnInit() {
     console.log("On Init - Product List component");
+    this.products = this._productService.getProducts();
   }
   onRatingClicked(rating: string): void{
     this.pageTitle = 'Product List: ' + rating;
+    this.filteredProducts = this.products;
   }
 
 }
