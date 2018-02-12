@@ -6,8 +6,16 @@ import { ProductService} from "./product-list/product.service";
   template: `
   <div>
     <h1>{{pageTitle}}</h1>
-    <pm-products></pm-products>
+
+    <ul class='nav navbar-nav'>
+      <li><a [routerLink]="['/welcome']">Welcome</a></li>
+      <li><a [routerLink]="['/products']">Product List</a></li>
+    </ul>
   </div>
+  <div class='container'>
+    <router-outlet></router-outlet>
+  </div>
+ 
   `,
   providers:[ProductService]
 })
